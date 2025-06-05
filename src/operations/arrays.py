@@ -17,10 +17,17 @@ class ArrayOperations:
 
     def insert(self, key: str, index: int, values: List[Any]) -> None:
         params = struct.pack('<I', index)
+
+        if values:
+            first_value_data_type = ProtocolEncoder.get_data_type(values[0])
+        else:
+            first_value_data_type = DataType.STRING  # Default fallback
+
         for value in values:
-            value_bytes, _ = ProtocolEncoder.encode_value(value)
+            value_bytes = ProtocolEncoder.encode_value(value)  # Only one return value
             params += value_bytes
-        packet = RequestPacket(CompositeType.ARRAY, DataType.STRING, Operation.INSERT, key, params)
+
+        packet = RequestPacket(CompositeType.ARRAY, first_value_data_type, Operation.INSERT, key, params)
         self._send_request(packet)
 
     def remove(self, key: str, start: int, end: int) -> None:

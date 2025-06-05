@@ -17,7 +17,8 @@ class MapOperations:
 
     def set(self, key: str, map_key: str, value: Any) -> None:
         map_key_bytes = ProtocolEncoder.encode_string(map_key)
-        value_bytes, data_type = ProtocolEncoder.encode_value(value)
+        value_bytes = ProtocolEncoder.encode_value(value)
+        data_type = ProtocolEncoder.get_data_type(value)
         params = map_key_bytes + value_bytes
         packet = RequestPacket(CompositeType.MAP, data_type, Operation.MAP_SET, key, params)
         self._send_request(packet)
@@ -34,13 +35,13 @@ class MapOperations:
         return bool(response.data)
 
 
-def keys(self, key: str) -> List[str]:
-    packet = RequestPacket(CompositeType.MAP, DataType.STRING, Operation.MAP_KEYS, key)
-    response = self._send_request(packet)
-    return response.data if response.data else []
+    def keys(self, key: str) -> List[str]:
+        packet = RequestPacket(CompositeType.MAP, DataType.STRING, Operation.MAP_KEYS, key)
+        response = self._send_request(packet)
+        return response.data if response.data else []
 
 
-def values(self, key: str) -> List[Any]:
-    packet = RequestPacket(CompositeType.MAP, DataType.STRING, Operation.MAP_VALUES, key)
-    response = self._send_request(packet)
-    return response.data if response.data else []
+    def values(self, key: str) -> List[Any]:
+        packet = RequestPacket(CompositeType.MAP, DataType.STRING, Operation.MAP_VALUES, key)
+        response = self._send_request(packet)
+        return response.data if response.data else []
