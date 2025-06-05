@@ -72,3 +72,18 @@ class ProtocolEncoder:
             result += ProtocolEncoder.encode_composite_value(value)
 
         return result
+
+    @staticmethod
+    def get_data_type(value: Any) -> DataType:
+        if isinstance(value, bool):
+            return DataType.BOOL
+        elif isinstance(value, int):
+            return DataType.INT
+        elif isinstance(value, float):
+            return DataType.FLOAT
+        elif isinstance(value, str):
+            return DataType.STRING
+        elif isinstance(value, (bytes, bytearray)):
+            return DataType.BLOB
+        else:
+            raise ValueError(f"Unsupported value type: {type(value)}")
