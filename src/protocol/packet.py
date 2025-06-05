@@ -42,6 +42,18 @@ class ResponsePacket:
             try:
                 response_data, _ = ProtocolDecoder.decode_value(data[1:])
             except:
-                response_data = data[1:]
+                remaining_data = data[1:]
+                if len(remaining_data) >= 4:
+                    data_length = struct.unpack('<I', remaining_data[:4])[0]
+                    if len(remaining_data) >= 4 + data_length:
+                        raw_data = remaining_data[4:4 + data_length]
+                        try:
+                            response_data = raw_data.decode('utf-8')
+                        except UnicodeDecodeError:
+                            response_data = raw_data
+                    else:
+                        response_data = remaining_data
+                else:
+                    response_data = remaining_data
 
         return cls(status, response_data)
