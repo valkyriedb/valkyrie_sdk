@@ -6,7 +6,6 @@ from src.protocol.types import CompositeType, DataType, Operation, Status
 
 
 class TestMapOperations:
-    """Test suite for MapOperations"""
 
     @pytest.fixture
     def mock_send_request(self):
@@ -29,7 +28,7 @@ class TestMapOperations:
         assert call_args.composite == CompositeType.MAP
         assert call_args.operation == Operation.MAP_GET
         assert call_args.key == "map_key"
-        assert len(call_args.params) > 0  # Should contain encoded field key
+        assert len(call_args.params) > 0
 
     def test_set(self, maps, mock_send_request):
         mock_response = ResponsePacket(Status.OK)

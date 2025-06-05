@@ -6,7 +6,6 @@ from src.protocol.types import CompositeType, DataType, Operation, Status
 
 
 class TestArrayOperations:
-    """Test suite for ArrayOperations"""
 
     @pytest.fixture
     def mock_send_request(self):
@@ -48,7 +47,7 @@ class TestArrayOperations:
         call_args = mock_send_request.call_args[0][0]
         assert call_args.operation == Operation.INSERT
         assert call_args.key == "array_key"
-        assert len(call_args.params) > 4  # Should contain index + encoded values
+        assert len(call_args.params) > 4
 
     def test_remove(self, arrays, mock_send_request):
         mock_response = ResponsePacket(Status.OK)
